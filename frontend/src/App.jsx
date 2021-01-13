@@ -2,6 +2,7 @@ import React from 'react'
 import { HashRouter as Router, Switch, Route } from 'react-router-dom'
 
 import { Home } from './pages/Home'
+import { Board } from './pages/Board'
 import { LoginSignup } from './pages/LoginSignup'
 import { Chat } from './pages/Chat'
 import { UserDetails } from './pages/UserDetails'
@@ -21,14 +22,12 @@ export function App() {
             <Route path="/user/:id" component={UserDetails} />
             <Route path="/login" component={LoginSignup} />
             <Route path="/chat" component={Chat} />
+            <Route path="/Board" component={Board} />
             <Route path="/" component={Home} />
           </Switch>
         </main>
-        <footer>
-          Starter
-        </footer>
       </Router>
-    </div>
+   </div>
   )
 }
 
