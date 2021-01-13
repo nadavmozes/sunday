@@ -1,75 +1,126 @@
-// import { storageService } from './asyncStorageService'
-import { httpService } from './httpService'
-const SCORE_FOR_REVIEW = 10
+// import httpService from './httpService';
+import socketService from './socketService'
 
 export const userService = {
+    loadUsers,
+    getUserById,
     login,
-    logout,
     signup,
-    getUsers,
-    getById,
-    remove,
-    update,
-    getLoggedinUser,
-    increaseScore
+    guestLogin,
+    markAsRead,
+    updateUser,
+    logout,
+    getCurrUser
 }
-
-window.userService = userService
-// Note: due to async, must run one by one...
-// userService.signup({fullname: 'Puki Norma', username: 'user1', password:'123',score: 100, isAdmin: false})
-// userService.signup({fullname: 'Master Adminov', username: 'admin', password:'123', score: 100, isAdmin: true})
-
-function getUsers() {
-    // return storageService.query('user')
-    return httpService.get(`user`)
+async function loadUsers() {
+    try {
+        const users = await httpService.get('user')
+        return users;
+    } catch (err) {
+        console.log('userService: Coulnd\'t get users');
+        throw err;
+    }
 }
-
-function getById(userId) {
-    // return storageService.get('user', userId)
-    return httpService.get(`user/${userId}`)
+async function markAsRead(loggedUser) {
+    loggedUser.notifications.forEach(notification => {
+        notification.isRead = true
+    })
+    updateUser(loggedUser)
+    try {
+        return loggedUser
+    } catch (err) {
+        console.log('userService: Something went wrong');
+        throw err;
+    }
 }
-function remove(userId) {
-    // return storageService.remove('user', userId)
-    return httpService.delete(`user/${userId}`)
+async function getUserById(userId) {
+    try {
+        const user = await httpService.get(`user/${userId}`);
+        return user
+    } catch (err) {
+        console.log('userService: Coulnd\'t get user');
+        throw err;
+    }
 }
-
-async function update(user) {
-    // return storageService.put('user', user)
-    user = await httpService.put(`user/${user._id}`, user)
-    // Handle case in which admin updates other user's details
-    if (getLoggedinUser()._id === user._id) _saveLocalUser(user)
-}
-
-async function increaseScore(by = SCORE_FOR_REVIEW) {
-    const user = getLoggedinUser()
-    user.score = user.score + by || by
-    await update(user)
-    return user.score
-}
-
 async function login(userCred) {
-    // const users = await storageService.query('user')
-    // const user = users.find(user => user.username === userCred.username)
-    // return _handleLogin(user)
-
-    const user = await httpService.post('auth/login', userCred)
-    if (user) return _saveLocalUser(user)
+    try {
+        const user = await httpService.post('auth/login', userCred);
+        return _handleLogin(user)
+    } catch (err) {
+        console.log('userService: Wrong username or password');
+        throw err;
+    }
 }
 async function signup(userCred) {
-    // const user = await storageService.post('user', userCred)
-    const user = await httpService.post('auth/signup', userCred)
-    return _saveLocalUser(user)
+    const user = {
+        isAdmin: false,
+        boards: [],
+        notifications: [],
+        birthDay: '',
+        company: 'adidas',
+        phoneNumber: '0224132124',
+        ...userCred
+    }
+    try {
+        const newUser = await httpService.post('auth/signup', user)
+        return _handleLogin(newUser)
+    } catch (err) {
+        console.log('userService: Couldn\'t sign up', err);
+        return Promise.reject(err.response.data);
+
+    }
+}
+async function guestLogin() {
+    try {
+        const user = await login({ username: 'guest', password: '12345' });
+        user.notifications = [{
+            byUser: {
+                _id: '4832r4erfef4949fkd39',
+                imgUrl: 'img/url',
+                fullName: 'Nadav Mozes'
+            },
+            content: 'Nadav add Inbal',
+            createdAt: Date.now() - 1000 * 60 * 2
+        },
+        {
+            byUser: {
+                _id: '4832r4erfef4949fkd38',
+                imgUrl: 'img/url',
+                fullName: 'Yair Mor'
+            },
+            content: 'Yair add new group...',
+            createdAt: Date.now() - 1000 * 60 * 3
+        },
+        {
+            byUser: {
+                _id: '4832r4erfef4949fkd37',
+                imgUrl: 'img/url',
+                fullName: 'Inbal Azmon'
+            },
+            content: 'Inbal change status of task',
+            createdAt: Date.now() - 1000 * 60 * 4
+        }
+        ]
+        return user
+    } catch (err) {
+        console.log('userService: Couldn\'t login as guest');
+        throw err;
+    }
+}
+async function updateUser(user) {
+    const updatedUser = await httpService.put(`auth/update/${user._id}`, user)
+    return updatedUser
 }
 async function logout() {
-    sessionStorage.clear()
-    return await httpService.post('auth/logout')
+    await httpService.post('auth/logout');
+    sessionStorage.clear();
 }
-function _saveLocalUser(user) {
-    sessionStorage.setItem('loggedinUser', JSON.stringify(user))
-    return user
-}
-
-function getLoggedinUser() {
-    return JSON.parse(sessionStorage.getItem('loggedinUser'))
+function getCurrUser() {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    return user;
 }
 
+function _handleLogin(user) {
+    sessionStorage.setItem('user', JSON.stringify(user))
+    return user;
+}

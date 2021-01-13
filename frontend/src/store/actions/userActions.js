@@ -1,61 +1,93 @@
-import { userService } from '../../services/userService'
-
-// THUNK action creators
-// Work asynchronously with the service and dispatch actions to the reducers 
+import { userService } from "../../services/userService";
 
 export function loadUsers() {
-  return async dispatch => {
-    try {
-      dispatch({ type: 'LOADING_START' })
-      const users = await userService.getUsers()
-      dispatch({ type: 'SET_USERS', users })
-    } catch (err) {
-      console.log('UserActions: err in loadUsers', err)
-    } finally {
-      dispatch({ type: 'LOADING_DONE' })
+    return async dispatch => {
+        try {
+            const users = await userService.loadUsers();
+            dispatch({ type: 'SET_USERS', users })
+        } catch (err) {
+            console.log('userActions: Couldn\'t load users');
+            throw err;
+        }
     }
-  }
 }
-
-export function removeUser(userId) {
-  return async dispatch => {
-    try {
-      await userService.remove(userId)
-      dispatch({ type: 'REMOVE_USER', userId })
-    } catch (err) {
-      console.log('UserActions: err in removeUser', err)
+export function login(userCred) {
+    return async dispatch => {
+        try {
+            const user = await userService.login(userCred);
+            dispatch({ type: 'SET_USER', user })
+        } catch (err) {
+            console.log('userActions: Couldn\'t login');
+            throw err;
+        }
     }
-  }
 }
-
-
-export function login(userCreds) {
-  return async dispatch => {
-    try {
-      const user = await userService.login(userCreds)
-      dispatch({ type: 'SET_USER', user })
-    } catch (err) {
-      console.log('UserActions: err in login', err)
+export function signup(userCred) {
+    return async dispatch => {
+        try {
+            const user = await userService.signup(userCred);
+            dispatch({ type: 'SET_USER', user })
+        } catch (err) {
+            console.log('userActions: Couldn\'t signup', err);
+            return Promise.reject(err);
+        }
     }
-  }
 }
-export function signup(userCreds) {
-  return async dispatch => {
-    try {
-      const user = await userService.signup(userCreds)
-      dispatch({ type: 'SET_USER', user })
-    } catch (err) {
-      console.log('UserActions: err in signup', err)
+export function guestLogin() {
+    return async dispatch => {
+        try {
+            const user = await userService.guestLogin();
+            dispatch({ type: 'SET_USER', user })
+        } catch (err) {
+            console.log('userActions: Couldn\'t login as a guest');
+            throw err;
+        }
     }
-  }
+}
+export function markAsRead(loggedUser) {
+    return async dispatch => {
+        try {
+            const user = await userService.markAsRead(loggedUser);
+            dispatch({ type: 'SET_USER', user })
+        } catch (err) {
+            console.log('userActions: Couldn\'t login as a guest');
+            throw err;
+        }
+    }
+}
+export function removeNotifications(loggedUser) {
+    const user = loggedUser
+    user.notifications = []
+
+    return async dispatch => {
+        try {
+            userService.updateUser(loggedUser)
+            dispatch({ type: 'UPDATE_PROFILE', user })
+        } catch (err) {
+            console.log('ERROR, couldnt remove notifications', err);
+        }
+    }
+
+}
+export function updateUser(loggedUser) {
+    return async dispatch => {
+        try {
+            userService.updateUser(loggedUser)
+            dispatch({ type: 'SET_USER', user: loggedUser })
+        } catch (err) {
+            console.log('userActions: Couldn\'t update user');
+            throw err;
+        }
+    }
 }
 export function logout() {
-  return async dispatch => {
-    try {
-      await userService.logout()
-      dispatch({ type: 'SET_USER', user: null })
-    } catch (err) {
-      console.log('UserActions: err in logout', err)
+    return dispatch => {
+        try {
+            userService.logout();
+            dispatch({ type: 'SET_USER', user: null })
+        } catch (err) {
+            console.log('userActions: Couldn\'t logout');
+            throw err;
+        }
     }
-  }
 }
