@@ -24,11 +24,8 @@ export function App() {
             <Route path="/" component={Home} />
           </Switch>
         </main>
-        <footer>
-          Starter
-        </footer>
       </Router>
-    </div>
+   </div>
   )
 }
 

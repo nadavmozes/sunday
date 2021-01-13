@@ -1,5 +1,7 @@
 .boardbar {
     display: flex;
+    border-left: 1px solid hsla(0,0%,42.7%,.35);
+    border-top-left-radius: 15px;
 }
 
 button {
