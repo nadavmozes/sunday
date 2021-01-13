@@ -31,7 +31,7 @@ render() {
 
 const mapStateToProps = state => {
     return {
-        loggedInUser: state.userModule.loggedInUser
+        loggedInUser: state.userReducer.loggedInUser
     }
 }
 const mapDispatchToProps = {}

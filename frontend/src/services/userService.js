@@ -1,4 +1,4 @@
-// import httpService from './httpService';
+ import {httpService} from './httpService';
 import socketService from './socketService'
 
 export const userService = {
