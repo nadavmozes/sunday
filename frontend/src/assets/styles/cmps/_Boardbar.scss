@@ -1,3 +1,15 @@
 .boardbar {
     display: flex;
 }
+
+button {
+    border: 0;
+    background-color: #ce2e6c;
+    color: whitesmoke;
+    padding: 5px 10px;
+    margin: 5px;
+    height: 25px;
+    &:hover {
+        background-color: #7a324e;
+    }
+}
