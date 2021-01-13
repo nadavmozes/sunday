@@ -6,7 +6,7 @@ class _Navbar extends Component {
     render() {
         const {loggedInUser} = this.props;
         return <header>
-            <nav>
+            <nav className="flex column">
                 <NavLink exact to="/"><span role="img" aria-label="logo">🙏</span></NavLink>
                 <NavLink to="/login">Login</NavLink>
                 <NavLink exact to="/">User Reviews</NavLink>
