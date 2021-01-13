@@ -1,12 +1,33 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { Component } from 'react'
+//import { connect } from 'react';
+import { Group } from '../cmps/Group';
 
-export class Board extends Component {
-    render() {
-        return (
-            <div>
-                <p>Board</p>
-            </div>
-        )
-    }
+class _Board extends Component  {
+
+    state = {
+        boardId: '',
+        txt: '',
+        }
+
+
+    render(){
+    return (
+        <div>
+             <p>Main Board</p>
+             {/* </Filter> */}
+{/* </Group> */}
+        </div>
+    )
+}
 }
 
+const mapStateToProps = (state) => ({
+    
+})
+
+const mapDispatchToProps = {
+    
+}
+//connect(mapStateToProps, mapDispatchToProps)
+export const Board = (_Board)
