@@ -1,113 +1,68 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-
-import { loadReviews, addReview, removeReview } from '../store/actions/reviewActions.js'
-import { loadUsers } from '../store/actions/userActions.js'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+// Inside imports
+import { loadBoards } from '../store/actions/boardActions'
+import { guestLogin } from '../store/actions/userActions'
 
 class _Home extends Component {
-  state = {
-    reviewToEdit: {
-      txt: '',
-      aboutUserId: ''
+    state = {
+        isLoading: false
     }
-  }
-  componentDidMount() {
-    this.props.loadReviews()
-    this.props.loadUsers()
-  }
+    componentDidMount() {
+        this.video = React.createRef();
+    }
 
-  handleChange = ev => {
-    const { name, value } = ev.target
-    this.setState(prevState => ({
-      reviewToEdit: {
-        ...prevState.reviewToEdit,
-        [name]: value
-      }
-    }))
-  }
+    guestLogin = async () => {
+        this.setState({ isLoading: true })
 
-  addReview = async ev => {
-    ev.preventDefault()
-    const { reviewToEdit } = this.state
-    if (!reviewToEdit.txt || !reviewToEdit.aboutUserId) return alert('All fields are required')
-    await this.props.addReview(this.state.reviewToEdit)
-    this.setState({ reviewToEdit: { txt: '', aboutUserId: '' } })
-  }
+        await this.props.guestLogin()
+        await this.props.loadBoards()
 
-  onRemove = async reviewId => {
-    await this.props.removeReview(reviewId)
-    // this.props.history.push('/login')
-  }
+        this.setState({ isLoading: false })
 
-  canRemove = review =>
-    (review.byUser._id === this.props.loggedInUser?._id || this.props.loggedInUser?.isAdmin)
+        this.props.history.push(`/board/${this.props.boards[0]._id}`)
+    }
 
-  render() {
-    return (
-      <div className="home">
-        <h1>Reviews and Gossip</h1>
-        {this.props.reviews && <ul className="review-list">
-          {this.props.reviews.map(review => (
-            <li key={review._id}>
-              { this.canRemove(review) &&
-                <button onClick={() => this.onRemove(review._id)}>X</button>}
-              <p>
-                About:
-                <Link to={`user/${review.aboutUser._id}`}>
-                  {review.aboutUser.fullname}
-                </Link>
-              </p>
-              <h3>{review.txt}</h3>
+    render() {
+        if (this.state.isLoading) return (
+            <div className="loader-container flex justify-center align-center">
+                <p>working check</p>
+            </div>
+        )
+        return (
+            <section className="">
+                <main className="">
+                    <div className="">
+                        <NavLink to="/login">
+                            <button>Login</button>
+                        </NavLink>
+                        <NavLink to="/signup">
+                            <button>Sign-up</button>
+                        </NavLink>
+                    </div>
+                    <div className="col-left flex align-center justify-center padding-x-30  column">
+                        <h1>Join the future.</h1>
+                        <div className="inner-wrapper">
+    
+                            <button onClick={this.guestLogin} className="guest-button ">Try As a Guest!</button>
+                        </div>
 
-              <p>
-                By:
-                <Link to={`user/${review.byUser._id}`}>
-                  {review.byUser.fullname}
-                </Link>
-              </p>
-            </li>
-          ))}
-        </ul>}
-        {this.props.users && this.props.loggedInUser &&
-          <form onSubmit={this.addReview}>
-            <select
-              onChange={this.handleChange}
-              value={this.state.reviewToEdit.aboutUserId}
-              name="aboutUserId"
-            >
-              <option value="">Select User</option>
-              {this.props.users.map(user => (
-                <option key={user._id} value={user._id}>
-                  {user.fullname}
-                </option>
-              ))}
-            </select>
-            <textarea
-              name="txt"
-              onChange={this.handleChange}
-              value={this.state.reviewToEdit.txt}
-            ></textarea>
-            <button>Submit</button>
-          </form>}
-        <hr />
-      </div>
-    )
-  }
+                    </div>
+                  
+                </main>
+            </section>
+        )
+    }
 }
-
 const mapStateToProps = state => {
-  return {
-    reviews: state.reviewModule.reviews,
-    users: state.userModule.users,
-    loggedInUser: state.userModule.loggedInUser
-  }
+    return {
+        boards: state.boardReducer.boards,
+        loggedUser: state.userReducer.loggedUser
+    }
 }
 const mapDispatchToProps = {
-  loadReviews,
-  loadUsers,
-  addReview,
-  removeReview
+    loadBoards,
+    guestLogin
 }
-
-export const Home = connect(mapStateToProps, mapDispatchToProps)(_Home)
+export const Home = connect(mapStateToProps, mapDispatchToProps)(_Home);
