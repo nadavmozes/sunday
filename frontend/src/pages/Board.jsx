@@ -2,6 +2,7 @@ import React from 'react'
 import { Component } from 'react'
 //import { connect } from 'react';
 import { Group } from '../cmps/Group';
+import {boardService} from '../services/boardService'
 
 class _Board extends Component  {
 

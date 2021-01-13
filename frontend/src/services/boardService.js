@@ -1,5 +1,5 @@
 
-import httpService from './httpService'
+import {httpService} from './httpService'
 export const boardService = {
 loadBoards,
 removeBoard,

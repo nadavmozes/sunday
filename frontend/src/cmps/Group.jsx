@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import {boardService} from '../services/boardService'
 export default class Group extends Component {
     state = {
         id: '',
