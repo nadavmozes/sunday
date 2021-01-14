@@ -25,16 +25,16 @@ export  class _Task extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-      users: state.userModule.users,
-      loggedInUser: state.userModule.loggedInUser
-    }
-  }
-  const mapDispatchToProps = {
-    loadBoards,
-    loadUsers,
-  }
-  
-  export const Task = connect(mapStateToProps, mapDispatchToProps)(_Task)
+// const mapStateToProps = state => {
+//     return {
+//       users: state.userModule.users,
+//       loggedInUser: state.userModule.loggedInUser
+//     }
+//   }
+//   const mapDispatchToProps = {
+//     loadBoards,
+//     loadUsers,
+//   }
+  //connect(mapStateToProps, mapDispatchToProps)
+ // export const Task = (_Task)
   

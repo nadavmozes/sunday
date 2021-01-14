@@ -17,6 +17,7 @@ export function App() {
       <Router>
         <Navbar></Navbar>
         <Boardbar></Boardbar>
+      
         <main>
           <Switch>
             <Route path="/user/:id" component={UserDetails} />

@@ -1,12 +1,116 @@
 
-import  {httpService}  from './httpService'
+
+import { httpService } from './httpService'
+
+
 export const boardService = {
-loadBoards,
-removeBoard,
-addBoard,
-addGroup,
+    loadBoards,
+    removeBoard,
+    addBoard,
+    addGroup,
+    query
 }
 
+let gBoard = {
+    "_id": 12124,
+    "boardCreator": {
+        "_id": 123123,
+        "fullName": "fullname",
+        "imgUrl": "www.imgur.com/sasf"
+    },
+    "name": "board1",
+    "createdAt": 24124135124,
+    "description": "Enter description here",
+    "members": [
+        {
+            "_id": "u101",
+            "fullname": "sunday",
+            "imgUrl": "imgure/sfasfa"
+        }
+    ],
+    "groups": [
+        {
+            "_id": 124,
+            "name": "week1",
+            "createdAt": "date",
+            "color": "blue",
+            "lastUpdated": 198465168486,
+
+
+
+            "tasks": [
+                {
+                    "id": 21412,
+                    "name": "sneeze",
+
+                    "createdAt": 1123124124241,
+                    "members": [
+                        {
+                            "_id": 1234,
+                            "fullname": "inbal azmon",
+                            "imgUrl": "www/imgurl"
+                        }
+                    ],
+
+                    "note": "do this until tomorrow",
+                    "lastUpdated": "yesterday",
+                    "isSelected": false,
+                    "posts": [],
+                    "tags": [
+                        "ui",
+                        "ux"
+                    ],
+                    "attachedImgs": []
+                }
+            ]
+        }
+    ],
+    "activityLog": [
+        {
+            "createdAt": 124124125124,
+            "byUser": {
+                "_id": 123,
+                "imgUrl": "www.imgur",
+                "fullName": "sunday"
+            },
+            "description": "removed task \"do the dishes\"",
+            "task": {
+                "id": 123,
+                "name": "do the dishes"
+            }
+        },
+        {
+            "createdAt": 12412541251,
+            "byUser": {
+                "_id": 123,
+                "imgUrl": "www.imgur",
+                "fullName": "sunday"
+            },
+            "description": "changed group name from project2 to project3",
+            "group": {
+                "id": 142,
+                "name": "project3"
+            }
+        },
+        {
+            "createdAt": 4514512352135,
+            "byUser": {
+                "_id": 123,
+                "imgUrl": "www.imgur",
+                "fullName": "sunday"
+            },
+            "description": "added group project2",
+            "group": {
+                "id": 142,
+                "name": "project2"
+            }
+        }
+    ]
+}
+
+function query() {
+    return gBoard
+}
 async function loadBoards() {
     const boards = await httpService.get('board')
     return boards
@@ -42,14 +146,14 @@ async function addBoard() {
                     "createdAt": "date",
                     "color": "blue",
                     "lastUpdated": 198465168486,
-               
-                   
-                  
+
+
+
                     "tasks": [
                         {
                             "id": 21412,
                             "name": "sneeze",
-                        
+
                             "createdAt": 1123124124241,
                             "members": [
                                 {
@@ -58,7 +162,7 @@ async function addBoard() {
                                     "imgUrl": "www/imgurl"
                                 }
                             ],
-                          
+
                             "note": "do this until tomorrow",
                             "lastUpdated": "yesterday",
                             "isSelected": false,
@@ -158,14 +262,14 @@ function addGroup(board, loggedUser) {
             "tags": []
         }]
     }
-    try {
-        board.groups.push(group)
-        const desc = `${loggedUser.fullName} Added a new group.`
-        return handleBoardChanges(desc, loggedUser, board)
-    } catch (err) {
-        console.log('boardService: Couldn\'t add group');
-        throw err;
-    }
+    // try {
+    //     board.groups.push(group)
+    //     const desc = `${loggedUser.fullName} Added a new group.`
+    //     return handleBoardChanges(desc, loggedUser, board)
+    // } catch (err) {
+    //     console.log('boardService: Couldn\'t add group');
+    //     throw err;
+    // }
 }
 
 
