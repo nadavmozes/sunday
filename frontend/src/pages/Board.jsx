@@ -35,21 +35,18 @@ class _Board extends Component {
   render() {
     const board = this.getBoard();
     console.log(board);
-    console.log('grouuups!@', board.groups[0].name)
+   
     if (!board) return <h1>Loading</h1> //todo Loading cmp
+    // const group;
     return (
       <div>
 
         <p>{board.name}</p>
         <p></p>
-        
-
-
-
-
-
+        {/* <Group board={board}/>  */}
         {/* </Filter> */}
-        <Group/> 
+        <Group group={board.groups[0]}/> 
+       
         {/* {this.props.boards && <ul>
           {this.props.boards.groups.map(group => (
             <li key={group._id}>
