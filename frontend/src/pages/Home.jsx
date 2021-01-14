@@ -21,7 +21,7 @@ class _Home extends Component {
 
         this.setState({ isLoading: false })
 
-        this.props.history.push(`/board/${this.props.boards[0]._id}`)
+        this.props.history.push(`/board/${this.props.boards[0]}`)
     }
 
     render() {
@@ -44,12 +44,13 @@ class _Home extends Component {
                     <div className="col-left flex align-center justify-center padding-x-30  column">
                         <h1>Sunday - Homepage</h1>
                         <div className="inner-wrapper">
-    
-                            <button onClick={this.guestLogin} className="guest-button ">Try Guest!</button>
+                            <NavLink to="/board">
+                                <button onClick={this.guestLogin} className="guest-button" >Try Guest!</button>
+                            </NavLink>
                         </div>
 
                     </div>
-                  
+
                 </main>
             </section>
         )

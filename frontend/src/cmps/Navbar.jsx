@@ -3,6 +3,14 @@ import { Link, NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 class _Navbar extends Component {
+
+    onLogout = () => {
+        this.props.logout()
+        this.props.history.push('/login')
+    }
+    goToUserProfile = (id) => {
+        this.props.history.push(`/user/${id}`)
+    }
     render() {
         const {loggedInUser} = this.props;
         return <header>
@@ -29,7 +37,9 @@ const mapStateToProps = state => {
         loggedInUser: state.userReducer.loggedInUser
     }
 }
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+    
+}
 
 
 export const Navbar = connect(mapStateToProps, mapDispatchToProps)(_Navbar)

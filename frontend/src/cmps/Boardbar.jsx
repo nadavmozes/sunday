@@ -18,12 +18,16 @@ componentWillUnmount() {
 
 render() {
     return (
-
-<section className="boardbar">
+<React.Fragment>
+<section>
+    <div className="boardbar">
     <h2>Boards</h2>
     <button>+</button>
+    </div>
+    <input onChange={this.handleSearchChange} type="text" placeholder="Search a Board" />
 </section>
 
+ </React.Fragment>
     )
 }
 
