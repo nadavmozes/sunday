@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
-
-// Inside imports
 import { login, guestLogin, signup } from '../store/actions/userActions.js'
 import { loadBoards } from '../store/actions/boardActions'
 

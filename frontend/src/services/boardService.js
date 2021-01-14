@@ -4,6 +4,7 @@ export const boardService = {
 loadBoards,
 removeBoard,
 addBoard,
+addGroup,
 }
 
 async function loadBoards() {
@@ -133,7 +134,39 @@ async function addBoard() {
     return newBoard
 }
 
-
+function addGroup(board, loggedUser) {
+    const group = {
+        "id": _makeid(),
+        "name": 'week',
+        "createdAt": 'date',
+        "color": '#70ADB5',
+        "lastUpdated": Date.now(),
+        "isTagsShown": false,
+        "tags": [],
+        "tasks": [{
+            "id": _makeid(),
+            "name": 'Click me!',
+            "createdAt": Date.now(),
+            "members": [],
+            "status": '',
+            "priority": '',
+            "dueDate": Date.now(),
+            "updates": [],
+            "lastUpdated": 'two days ago',
+            "isSelected": false,
+            "posts": [],
+            "tags": []
+        }]
+    }
+    try {
+        board.groups.push(group)
+        const desc = `${loggedUser.fullName} Added a new group.`
+        return handleBoardChanges(desc, loggedUser, board)
+    } catch (err) {
+        console.log('boardService: Couldn\'t add group');
+        throw err;
+    }
+}
 
 
 function _makeid(length = 5) {
