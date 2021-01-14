@@ -46,7 +46,7 @@ let gBoard = {
                     "createdAt": 1123124124241,
                     "members": [
                         {
-                            "_id": 1234,
+                            "_id": 1634,
                             "fullname": "inbal azmon",
                             "imgUrl": "www/imgurl"
                         }
@@ -54,6 +54,41 @@ let gBoard = {
 
                     "note": "do this until tomorrow",
                     "lastUpdated": "yesterday",
+                    "isSelected": false,
+                    "posts": [],
+                    "tags": [
+                        "ui",
+                        "ux"
+                    ],
+                    "attachedImgs": []
+                }
+            ]
+        },
+        {
+            "_id": 134,
+            "name": "week2",
+            "createdAt": "date",
+            "color": "red",
+            "lastUpdated": 1984561668486,
+
+
+
+            "tasks": [
+                {
+                    "id": 21546,
+                    "name": "popo",
+
+                    "createdAt": 1123124124241,
+                    "members": [
+                        {
+                            "_id": 1234,
+                            "fullname": "yair mor",
+                            "imgUrl": "www/imgurl"
+                        }
+                    ],
+
+                    "note": "do this now",
+                    "lastUpdated": "the day before tommorow",
                     "isSelected": false,
                     "posts": [],
                     "tags": [
@@ -109,7 +144,11 @@ let gBoard = {
 }
 
 function query() {
-    return gBoard
+    return new Promise(resolve =>{
+        setTimeout(() => {
+            resolve(gBoard)
+        }, 3000);
+    })
 }
 async function loadBoards() {
     const boards = await httpService.get('board')

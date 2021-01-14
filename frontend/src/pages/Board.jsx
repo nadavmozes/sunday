@@ -1,7 +1,7 @@
 import React from 'react'
 import { Component } from 'react'
 import { connect } from 'react-redux'
-import { Group } from '../cmps/Group';
+import { GroupList } from '../cmps/GroupList';
 import { boardService } from '../services/boardService'
 import { loadBoards } from '../store/actions/boardActions.js'
 import { loadUsers } from '../store/actions/userActions.js'
@@ -12,18 +12,22 @@ class _Board extends Component {
     boardId: '',
     txt: '',
     isBoardShown: true,
+    currBoard: null
 
   }
 
   componentDidMount() {
+    this.getBoard()
     this.props.loadBoards()
     this.props.loadUsers()
     console.log(this.props.boards);
   }
 
-  getBoard = () => {
-    const gBoard = boardService.query()
-    return gBoard
+  getBoard = async () => {
+    const gBoard = await boardService.query()
+    this.setState({
+      currBoard : gBoard
+    })
   }
   //   _getCurrBoard = () => {
   //     return this.props.boards.find(board => board._id === this.state.boardId)
@@ -33,19 +37,18 @@ class _Board extends Component {
   // }
 
   render() {
-    const board = this.getBoard();
-    console.log(board);
-   
-    if (!board) return <h1>Loading</h1> //todo Loading cmp
+    const {currBoard} = this.state
+    if (!currBoard) return <h1>Loading</h1> //todo Loading cmp
     // const group;
+
     return (
       <div>
 
-        <p>{board.name}</p>
+        <p>{currBoard.name}</p>
         <p></p>
         {/* <Group board={board}/>  */}
         {/* </Filter> */}
-        <Group group={board.groups[0]}/> 
+        <GroupList groups={currBoard.groups}/> 
        
         {/* {this.props.boards && <ul>
           {this.props.boards.groups.map(group => (
