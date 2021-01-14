@@ -158,14 +158,14 @@ function addGroup(board, loggedUser) {
             "tags": []
         }]
     }
-    try {
-        board.groups.push(group)
-        const desc = `${loggedUser.fullName} Added a new group.`
-        return handleBoardChanges(desc, loggedUser, board)
-    } catch (err) {
-        console.log('boardService: Couldn\'t add group');
-        throw err;
-    }
+    // try {
+    //     board.groups.push(group)
+    //     const desc = `${loggedUser.fullName} Added a new group.`
+    //     return handleBoardChanges(desc, loggedUser, board)
+    // } catch (err) {
+    //     console.log('boardService: Couldn\'t add group');
+    //     throw err;
+    // }
 }
 
 
