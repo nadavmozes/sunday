@@ -42,10 +42,10 @@ class _Home extends Component {
                         </NavLink>
                     </div>
                     <div className="col-left flex align-center justify-center padding-x-30  column">
-                        <h1>Join the future.</h1>
+                        <h1>Sunday - Homepage</h1>
                         <div className="inner-wrapper">
     
-                            <button onClick={this.guestLogin} className="guest-button ">Try As a Guest!</button>
+                            <button onClick={this.guestLogin} className="guest-button ">Try Guest!</button>
                         </div>
 
                     </div>
