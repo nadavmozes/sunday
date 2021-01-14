@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {boardService} from '../services/boardService'
 import { loadBoards} from '../store/actions/boardActions.js'
 import { loadUsers } from '../store/actions/userActions.js'
-export  class Task extends Component {
+
+export  class _Task extends Component {
 
     componentDidMount() {
         this.props.loadBoards()
@@ -23,3 +24,17 @@ export  class Task extends Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+      users: state.userModule.users,
+      loggedInUser: state.userModule.loggedInUser
+    }
+  }
+  const mapDispatchToProps = {
+    loadBoards,
+    loadUsers,
+  }
+  
+  export const Task = connect(mapStateToProps, mapDispatchToProps)(_Task)
+  
